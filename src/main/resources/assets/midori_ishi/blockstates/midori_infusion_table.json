@@ -1,0 +1,57 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "midori_ishi:block/midori_infusion_table"
+      }
+    },
+    {
+      "apply": {
+        "model": "midori_ishi:block/midori_infusion_table_bottle0"
+      },
+      "when": {
+        "has_bottle_0": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "midori_ishi:block/midori_infusion_table_bottle1"
+      },
+      "when": {
+        "has_bottle_1": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "midori_ishi:block/midori_infusion_table_bottle2"
+      },
+      "when": {
+        "has_bottle_2": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "midori_ishi:block/midori_infusion_table_empty0"
+      },
+      "when": {
+        "has_bottle_0": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "midori_ishi:block/midori_infusion_table_empty1"
+      },
+      "when": {
+        "has_bottle_1": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "midori_ishi:block/midori_infusion_table_empty2"
+      },
+      "when": {
+        "has_bottle_2": "false"
+      }
+    }
+  ]
+}

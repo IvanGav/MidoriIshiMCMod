@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {"item": "midori_ishi:midori_ishi"},
+    {"item": "minecraft:brewing_stand"}
+  ],
+  "result": {
+    "item": "midori_ishi:midori_infusion_table",
+    "count": 1
+  }
+}

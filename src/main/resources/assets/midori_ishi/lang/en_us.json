@@ -1,0 +1,18 @@
+{
+  "item.midori_ishi.midori_ishi": "Midori Ishi",
+  "item.midori_ishi.midori_scanner": "Midori Scanner",
+  "item.midori_ishi.midori_vial": "Midori Vial",
+
+  "block.midori_ishi.midori_ishi_ore": "Midori Ishi Ore",
+  "block.midori_ishi.midori_infusion_table": "Midori Infusion Table",
+
+  "creativetab.midori_ishi_tab": "Midori Ishi Tab",
+
+  "tooltip.midori_ishi.midori_scanner.tooltip": "Gathers Midori Mahou at the tip of the stick to glimpse into a direction through blocks.",
+
+  "sounds.midori_ishi.midori_scanner_use": "You feel green energy eating away at your sanity...",
+
+  "effect.midori_ishi.midas_touch": "Midas Touch",
+  "effect.midori_ishi.greater_wither": "Imminent Doom",
+  "effect.midori_ishi.spider": "You Are a Spider"
+}
