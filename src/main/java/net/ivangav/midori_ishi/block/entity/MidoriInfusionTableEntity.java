@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
-import javax.annotation.Nullable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -81,7 +80,7 @@ public class MidoriInfusionTableEntity extends BlockEntity implements MenuProvid
     }
 
     @Override
-    public @Nullable AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
+    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
         return new MidoriInfusionTableMenu(pContainerId, pPlayerInventory, this, this.dataAccess);
     }
 
@@ -92,7 +91,7 @@ public class MidoriInfusionTableEntity extends BlockEntity implements MenuProvid
     }
 
     @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing) {
         if (capability == ITEM_HANDLER) {
             return handler.cast();
         }

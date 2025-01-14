@@ -40,7 +40,6 @@ public class MidoriTransmogrificationTableBlock extends BaseEntityBlock {
         return new MidoriTransmogrificationTableEntity(pPos, pState);
     }
 
-    @javax.annotation.Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         return pLevel.isClientSide ? null : createTickerHelper(
                 pBlockEntityType,

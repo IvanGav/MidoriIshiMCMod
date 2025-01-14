@@ -9,7 +9,10 @@ import net.minecraftforge.fml.common.Mod;
 public class ModEvents {
     @SubscribeEvent
     public static void onGreaterWitherExpireDie(MobEffectEvent ev) {
-        if((ev instanceof MobEffectEvent.Remove || ev instanceof MobEffectEvent.Expired) && ev.getEffectInstance().getDescriptionId().equals("effect.midori_ishi.greater_wither")) {
+        if(ev.getEffectInstance() == null) return;
+        if((ev instanceof MobEffectEvent.Remove || ev instanceof MobEffectEvent.Expired) && (
+                ev.getEffectInstance().getDescriptionId().equals("effect.midori_ishi.greater_wither")
+        )) {
             ev.getEntity().hurt(ev.getEntity().damageSources().wither(), 100);
         }
     }

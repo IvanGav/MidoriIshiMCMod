@@ -11,7 +11,3 @@ in `data/midori_ishi/recipes/...`:
 
 [datagen video](https://www.youtube.com/watch?v=enzKJWq0vNI&list=PLKGarocXCE1H9Y21-pxjt5Pt8bW14twa-&index=12)
 pain but probably very important for me =(
-
-test:
-- confusion amp 2
-- get block infused

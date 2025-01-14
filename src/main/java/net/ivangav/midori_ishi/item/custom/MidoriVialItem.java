@@ -23,7 +23,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.minecraft.world.level.gameevent.GameEvent;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class MidoriVialItem extends Item {
@@ -39,6 +38,39 @@ public class MidoriVialItem extends Item {
             "block.minecraft.wither_rose",
             "block.minecraft.wither_skeleton_skull",
             "item.minecraft.gold_ingot"
+
+//            "block.tconstruct.grout",
+//            "block.tconstruct.nether_grout",
+//
+//            "item.born_in_chaos_v1.dark_metal_nugget",
+//            "item.born_in_chaos_v1.pieceofdarkmetal",
+//            "item.born_in_chaos_v1.creepy_gift",
+//
+//            "item.alexscaves.uranium",
+//            "block.alexscaves.nuclear_bomb",
+//
+//            "item.scalinghealth.heart_crystal",
+//
+//            "item.hexerei.infused_fabric",
+//            "item.hexerei.blood_bottle",
+//
+//            "item.graveyard.corruption",
+//
+//            "item.galosphere.silver_ingot",
+//
+//            "item.easy_villagers.villager",
+//
+//            "item.mysticalagriculture.inferium_essence",
+//
+//            "item.create.goggles",
+//            "item.create.andesite_alloy",
+//
+//            "item.dragonsurvival.star_bone",
+//            "item.dragonsurvival.elder_dragon_dust",
+//            "item.dragonsurvival.elder_dragon_bone",
+//            "item.dragonsurvival.heart_element",
+//            "item.dragonsurvival.weak_dragon_heart",
+//            "item.dragonsurvival.elder_dragon_heart"
     );
     private static final ImmutableMap<String,VialEffectDanger> vialDanger = ImmutableMap.of(
             "item.midori_ishi.midori_ishi", VialEffectDanger.Safe,
@@ -60,7 +92,7 @@ public class MidoriVialItem extends Item {
             "block.minecraft.wither_skeleton_skull", "You don't feel well... You feel your insides being turned to dust",
             "item.minecraft.gold_ingot", "Greed"
     );
-    private static final ImmutableMap<String, Function3<Level, LivingEntity, String, Nullable>> vialEffect = ImmutableMap.of(
+    private static final ImmutableMap<String, Function3<Level, LivingEntity, String, Object>> vialEffect = ImmutableMap.of(
             "item.midori_ishi.midori_ishi", (level, e, infused_item)-> {
                 e.addEffect(new MobEffectInstance(MobEffects.HEAL, 20, 3));
                 e.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 200, 1));
@@ -251,7 +283,7 @@ public class MidoriVialItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+    public void appendHoverText(ItemStack pStack, Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         if(pStack.hasTag() && pStack.getTag().contains("infused_item")) {
             String infused_item = pStack.getTag().getString("infused_item");
             VialEffectDanger ved = vialDanger.getOrDefault(infused_item, VialEffectDanger.Harmful);

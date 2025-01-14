@@ -23,8 +23,6 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
-
 import static net.ivangav.midori_ishi.item.custom.MidoriVialItem.NBT_TAG_NAME;
 import static net.minecraftforge.common.capabilities.ForgeCapabilities.ITEM_HANDLER;
 
@@ -37,7 +35,7 @@ public class MidoriTransmogrificationTableEntity extends BlockEntity implements 
     public static final int BREW_DURATION = 200; //how long 1 brewing session lasts; 20=1sec
     public static final int MAX_FUEL = 18;
     public static final int FUEL_PER_REFUEL = 1;
-    public static final String[] ILLEGAL_NBT_TAGS = {"Items", "LootTable"};
+    public static final String[] ILLEGAL_NBT_TAGS = {"Items", "LootTable", "Inventory", "inventorySlots"};
     /** The items currently placed in the slots of the brewing stand. */
     private final ItemStackHandler items = new ItemStackHandler(4);
     private Item ingredient = Items.AIR;
@@ -79,7 +77,7 @@ public class MidoriTransmogrificationTableEntity extends BlockEntity implements 
     }
 
     @Override
-    public @Nullable AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
+    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
         return new MidoriTransmogrificationTableMenu(pContainerId, pPlayerInventory, this, this.dataAccess);
     }
 
@@ -90,7 +88,7 @@ public class MidoriTransmogrificationTableEntity extends BlockEntity implements 
     }
 
     @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing) {
         if (capability == ITEM_HANDLER) {
             return handler.cast();
         }
