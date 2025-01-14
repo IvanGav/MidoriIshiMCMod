@@ -19,6 +19,11 @@ public class ModBlockEntities {
             ()->BlockEntityType.Builder.of(MidoriInfusionTableEntity::new, ModBlocks.MIDORI_INFUSION_TABLE.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<MidoriTransmogrificationTableEntity>> MIDORI_TRANSMOGRIFICATION_TABLE_ENTITY = BLOCK_ENTITIES.register(
+            "midori_transmogrification_table_entity",
+            ()->BlockEntityType.Builder.of(MidoriTransmogrificationTableEntity::new, ModBlocks.MIDORI_TRANSMOGRIFICATION_TABLE.get()).build(null)
+    );
+
     //end listing blocks
 
     public static void register(IEventBus ebus) {

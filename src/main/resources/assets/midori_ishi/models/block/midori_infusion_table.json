@@ -1,6 +1,6 @@
 {
     "textures": {
-        "particle": "block/brewing_stand",
+        "particle": "midori_ishi:block/midori_infusion_table",
         "base": "midori_ishi:block/midori_infusion_table_base",
         "stand": "midori_ishi:block/midori_infusion_table"
     },

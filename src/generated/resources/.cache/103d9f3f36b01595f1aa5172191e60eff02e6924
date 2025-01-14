@@ -1,0 +1,4 @@
+// 1.20.1	2025-01-13T23:50:31.3170986	Registries
+128689bad0c9327ed799549175c377b8a6937ce8 data/midori_ishi/forge/biome_modifier/add_midori_ishi_ore.json
+8eb530c55fb952b8550e77a3c05af403e4737932 data/midori_ishi/worldgen/configured_feature/midori_ishi_ore.json
+9ea37e812b004fc164ab4d63446958ac1b7b93bf data/midori_ishi/worldgen/placed_feature/midori_ishi_ore_placed.json

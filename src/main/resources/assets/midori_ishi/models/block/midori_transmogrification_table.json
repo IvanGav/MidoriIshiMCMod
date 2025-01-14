@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "midori_ishi:block/midori_transmogrification_table_down",
+    "east": "midori_ishi:block/midori_transmogrification_table_side",
+    "north": "midori_ishi:block/midori_transmogrification_table_side",
+    "particle": "midori_ishi:block/midori_transmogrification_table_side",
+    "south": "midori_ishi:block/midori_transmogrification_table_side",
+    "up": "midori_ishi:block/midori_transmogrification_table_up",
+    "west": "midori_ishi:block/midori_transmogrification_table_side"
+  }
+}

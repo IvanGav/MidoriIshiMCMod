@@ -28,6 +28,7 @@ import java.util.List;
 
 public class MidoriVialItem extends Item {
     private static final int DRINK_DURATION = 32;
+    public static final String NBT_TAG_NAME = "infused_item";
 
     private static final ImmutableSet<String> vialRecipes = ImmutableSet.of(
             "item.midori_ishi.midori_ishi",
@@ -128,7 +129,7 @@ public class MidoriVialItem extends Item {
 
     public static void giveNBT(ItemStack currentStack, ItemStack infusedItem) {
         CompoundTag nbt = new CompoundTag();
-        nbt.putString("infused_item", infusedItem.getItem().getDescriptionId());
+        nbt.putString(NBT_TAG_NAME, infusedItem.getItem().getDescriptionId());
         currentStack.setTag(nbt);
     }
 
@@ -138,8 +139,8 @@ public class MidoriVialItem extends Item {
      */
     public ItemStack finishUsingItem(ItemStack pStack, Level level, LivingEntity e) {
         if (!level.isClientSide) {
-            if(pStack.hasTag() && pStack.getTag().contains("infused_item")) {
-                String infused_item = pStack.getTag().getString("infused_item");
+            if(pStack.hasTag() && pStack.getTag().contains(NBT_TAG_NAME)) {
+                String infused_item = pStack.getTag().getString(NBT_TAG_NAME);
                 if(vialRecipes.contains(infused_item)) {
                     e.sendSystemMessage(Component.literal(vialMessage.get(infused_item)));
                     vialEffect.get(infused_item).apply(level, e, infused_item);

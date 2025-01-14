@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "midori_ishi:midori_infusion_table"
+          "name": "midori_ishi:midori_transmogrification_table"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "midori_ishi:blocks/midori_infusion_table"
+  "random_sequence": "midori_ishi:blocks/midori_transmogrification_table"
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "midori_ishi:block/deepslate_midori_ishi_ore"
+  }
+}

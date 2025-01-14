@@ -2,6 +2,7 @@ package net.ivangav.midori_ishi.block;
 
 import net.ivangav.midori_ishi.MidoriIshiMod;
 import net.ivangav.midori_ishi.block.custom.MidoriInfusionTableBlock;
+import net.ivangav.midori_ishi.block.custom.MidoriTransmogrificationTableBlock;
 import net.ivangav.midori_ishi.item.ModItems;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
@@ -30,8 +31,17 @@ public class ModBlocks {
                     UniformInt.of(4,10)
             )
     );
+    public static final RegistryObject<Block> DEEPSLATE_MIDORI_ISHI_ORE = registerBlock("deepslate_midori_ishi_ore",
+            ()->new DropExperienceBlock(
+                    BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_DIAMOND_ORE).sound(SoundType.AMETHYST),
+                    UniformInt.of(4,10)
+            )
+    );
     public static final RegistryObject<Block> MIDORI_INFUSION_TABLE = registerBlock("midori_infusion_table",
             ()->new MidoriInfusionTableBlock(BlockBehaviour.Properties.copy(Blocks.BREWING_STAND))
+    );
+    public static final RegistryObject<Block> MIDORI_TRANSMOGRIFICATION_TABLE = registerBlock("midori_transmogrification_table",
+            ()->new MidoriTransmogrificationTableBlock(BlockBehaviour.Properties.copy(Blocks.CRAFTING_TABLE).sound(SoundType.AMETHYST))
     );
 
     //end listing blocks

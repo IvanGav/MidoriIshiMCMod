@@ -16,6 +16,10 @@ public class ModMenuTypes {
             "midori_infusion_table_menu",
             ()->IForgeMenuType.create(MidoriInfusionTableMenu::new)
     );
+    public static final RegistryObject<MenuType<MidoriTransmogrificationTableMenu>> MIDORI_TRANSMOGRIFICATION_TABLE_MENU = MENUS.register(
+            "midori_transmogrification_table_menu",
+            ()->IForgeMenuType.create(MidoriTransmogrificationTableMenu::new)
+    );
 
 //    private static <T extends AbstractContainerMenu>RegistryObject<MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {
 //        return MENUS.register(name, () -> IForgeMenuType.create(factory));

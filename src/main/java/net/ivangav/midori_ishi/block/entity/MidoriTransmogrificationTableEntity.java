@@ -1,48 +1,46 @@
 package net.ivangav.midori_ishi.block.entity;
 
-import net.ivangav.midori_ishi.block.custom.MidoriInfusionTableBlock;
 import net.ivangav.midori_ishi.item.ModItems;
-import net.ivangav.midori_ishi.item.custom.MidoriVialItem;
-import net.ivangav.midori_ishi.screen.MidoriInfusionTableMenu;
+import net.ivangav.midori_ishi.screen.MidoriTransmogrificationTableMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.*;
+import net.minecraft.world.Containers;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
-import javax.annotation.Nullable;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
+import javax.annotation.Nullable;
 
+import static net.ivangav.midori_ishi.item.custom.MidoriVialItem.NBT_TAG_NAME;
 import static net.minecraftforge.common.capabilities.ForgeCapabilities.ITEM_HANDLER;
 
-public class MidoriInfusionTableEntity extends BlockEntity implements MenuProvider {
-    private static final int INGREDIENT_SLOT = 3;
-    private static final int FUEL_SLOT = 4;
-    public static final int FUEL_USES = 2;
+public class MidoriTransmogrificationTableEntity extends BlockEntity implements MenuProvider {
+    private static final int INGREDIENT_SLOT = 2;
+    private static final int FUEL_SLOT = 3;
     public static final int DATA_BREW_TIME = 0;
     public static final int DATA_FUEL_USES = 1;
     public static final int NUM_DATA_VALUES = 2;
-    public static final int BREW_DURATION = 100; //how long 1 brewing session lasts
+    public static final int BREW_DURATION = 200; //how long 1 brewing session lasts; 20=1sec
+    public static final int MAX_FUEL = 18;
+    public static final int FUEL_PER_REFUEL = 1;
+    public static final String[] ILLEGAL_NBT_TAGS = {"Items", "LootTable"};
     /** The items currently placed in the slots of the brewing stand. */
-//    private NonNullList<ItemStack> items = NonNullList.withSize(5, ItemStack.EMPTY);
-    private final ItemStackHandler items = new ItemStackHandler(5);
+    private final ItemStackHandler items = new ItemStackHandler(4);
     private Item ingredient = Items.AIR;
-    private boolean[] potSpot = {false,false,false}; //purely for visual stuff; doesn't provide any other functionality
 
     private LazyOptional<IItemHandler> handler = LazyOptional.empty();
 
@@ -50,8 +48,8 @@ public class MidoriInfusionTableEntity extends BlockEntity implements MenuProvid
     int brewTime;
     int fuel;
 
-    public MidoriInfusionTableEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.MIDORI_INFUSION_TABLE_ENTITY.get(), pos, state);
+    public MidoriTransmogrificationTableEntity(BlockPos pos, BlockState state) {
+        super(ModBlockEntities.MIDORI_TRANSMOGRIFICATION_TABLE_ENTITY.get(), pos, state);
         dataAccess = new ContainerData() {
             public int get(int index) {
                 return switch (index) {
@@ -77,12 +75,12 @@ public class MidoriInfusionTableEntity extends BlockEntity implements MenuProvid
 
     @Override
     public @NotNull Component getDisplayName() {
-        return Component.translatable("block.midori_ishi.midori_infusion_table");
+        return Component.translatable("block.midori_ishi.midori_transmogrification_table");
     }
 
     @Override
     public @Nullable AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return new MidoriInfusionTableMenu(pContainerId, pPlayerInventory, this, this.dataAccess);
+        return new MidoriTransmogrificationTableMenu(pContainerId, pPlayerInventory, this, this.dataAccess);
     }
 
     @Override
@@ -113,7 +111,6 @@ public class MidoriInfusionTableEntity extends BlockEntity implements MenuProvid
     protected void saveAdditional(CompoundTag pTag) {
         super.saveAdditional(pTag);
         pTag.putShort("BrewTime", (short)brewTime);
-//        ContainerHelper.saveAllItems(pTag, this.items);
         pTag.put("Inventory", items.serializeNBT());
         pTag.putByte("Fuel", (byte)fuel);
     }
@@ -121,8 +118,6 @@ public class MidoriInfusionTableEntity extends BlockEntity implements MenuProvid
     @Override
     public void load(CompoundTag pTag) {
         super.load(pTag);
-//        this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-//        ContainerHelper.loadAllItems(pTag, this.items);
         this.brewTime = pTag.getShort("BrewTime");
         this.items.deserializeNBT(pTag.getCompound("Inventory"));
         this.fuel = pTag.getByte("Fuel");
@@ -137,7 +132,7 @@ public class MidoriInfusionTableEntity extends BlockEntity implements MenuProvid
         }
         if(mHasRecipe()) {
             mCheckFuel();
-            if(fuel > 0) {
+            if(fuel >= mGetIngredientCost()) {
                 if(mCraftingFinished()) {
                     //recipe hasn't started yet
                     mStartCrafting();
@@ -155,48 +150,27 @@ public class MidoriInfusionTableEntity extends BlockEntity implements MenuProvid
 //        else {
 //            mResetProgress();
 //        }
-
-        //for updating the texture with bottles
-        if (mPotSpotUpdate()) {
-            BlockState blockstate = pState;
-            if (!(pState.getBlock() instanceof MidoriInfusionTableBlock)) {return;}
-
-            for(int i = 0; i < MidoriInfusionTableBlock.HAS_BOTTLE.length; ++i) {
-                blockstate = blockstate.setValue(MidoriInfusionTableBlock.HAS_BOTTLE[i], potSpot[i]);
-            }
-
-            pLevel.setBlock(pPos, blockstate, 2);
-        }
     }
 
-    private boolean mPotSpotUpdate() {
-        if(Arrays.equals(potSpot, getOccupiedPotionSlots())) {
-            return false; //no update
-        }
-        potSpot = getOccupiedPotionSlots();
-        return true;
+    private int mGetIngredientCost() {
+        Rarity rarity = ingredient.getRarity(items.getStackInSlot(INGREDIENT_SLOT));
+        return switch(rarity) {
+            case COMMON -> 1;
+            case UNCOMMON -> 4;
+            case RARE -> 8;
+            case EPIC -> 16;
+        };
     }
 
     private void mCraftItem() {
         ItemStack infusedItem = items.getStackInSlot(INGREDIENT_SLOT);
-        boolean[] pot_pos = getPotionBits();
-        if(pot_pos[0]) {
-            items.extractItem(0, 1, false);
-            items.insertItem(0, new ItemStack(ModItems.MIDORI_VIAL.get()), false);
-            MidoriVialItem.giveNBT(items.getStackInSlot(0), infusedItem);
-        }
-        if(pot_pos[1]) {
-            items.extractItem(1, 1, false);
-            items.insertItem(1, new ItemStack(ModItems.MIDORI_VIAL.get()), false);
-            MidoriVialItem.giveNBT(items.getStackInSlot(1), infusedItem);
-        }
-        if(pot_pos[2]) {
-            items.extractItem(2, 1, false);
-            items.insertItem(2, new ItemStack(ModItems.MIDORI_VIAL.get()), false);
-            MidoriVialItem.giveNBT(items.getStackInSlot(2), infusedItem);
-        }
+        ItemStack new1 = infusedItem.copy(); new1.setCount(1);
+        ItemStack new2 = infusedItem.copy(); new2.setCount(1);
+        //slots are empty
+        items.insertItem(0, new1, false);
+        items.insertItem(1, new2, false);
         items.getStackInSlot(INGREDIENT_SLOT).shrink(1);
-        fuel--;
+        fuel -= mGetIngredientCost();
     }
 
     private void mStartCrafting() {
@@ -218,10 +192,26 @@ public class MidoriInfusionTableEntity extends BlockEntity implements MenuProvid
 
     private boolean mHasRecipe() {
         ItemStack ingredient = items.getStackInSlot(INGREDIENT_SLOT);
-        boolean[] potion_slots_filled = this.getPotionBits();
-        boolean has_available_water_bottles = potion_slots_filled[0] || potion_slots_filled[1] || potion_slots_filled[2];
-        //if empty, no recipe set
-        return !(ingredient.isEmpty()) && has_available_water_bottles;
+        if(ingredient.isEmpty()) return false;
+//        System.out.println("--got to checking tags");
+//        System.out.println("hasTag = " + ingredient.hasTag());
+//        if(ingredient.hasTag()) {
+//            System.out.println("getTag = " + ingredient.getTag());
+//        }
+        if(ingredient.hasTag()) {
+            CompoundTag tag = ingredient.getTag();
+            CompoundTag beTag = BlockItem.getBlockEntityData(ingredient);
+            for (String s : ILLEGAL_NBT_TAGS) {
+                //if item tags or "BlockEntityTag" list contain an illegal tag (aka implying they have an inventory), reject the recipe
+                if (tag.contains(s) || (beTag != null && beTag.contains(s)))
+                    return false;
+            }
+        }
+        ItemStack out1 = items.getStackInSlot(0);
+        ItemStack out2 = items.getStackInSlot(1);
+        //if output has correct items and a new item would fit
+        return  (out1.isEmpty() || (out1.is(ingredient.getItem()) && (out1.getMaxStackSize() >= out1.getCount()+1))) &&
+                (out2.isEmpty() || (out2.is(ingredient.getItem()) && (out2.getMaxStackSize() >= out2.getCount()+1)));
     }
 
     private void mSetIngredient() {
@@ -236,27 +226,16 @@ public class MidoriInfusionTableEntity extends BlockEntity implements MenuProvid
         //if ran out of fuel, refill the fuel as long as has midori ishi inserted
         ItemStack fuel_stack = items.getStackInSlot(FUEL_SLOT);
         //checking for MIDORI_ISHI is not strictly nessesary, as it will be enforced with inventory slot restrictions
-        if (fuel <= 0 && fuel_stack.is(ModItems.MIDORI_ISHI.get())) {
-            fuel = FUEL_USES;
+        while (fuel+FUEL_PER_REFUEL <= MAX_FUEL && fuel_stack.is(ModItems.MIDORI_ISHI.get())) {
+            fuel += FUEL_PER_REFUEL;
             fuel_stack.shrink(1);
         }
     }
 
     //return slots which are currently water bottles
-    private boolean[] getPotionBits() {
-        boolean[] slots = new boolean[3];
-        for(int i = 0; i < 3; ++i) {
-            if (this.items.getStackInSlot(i).is(Items.POTION)) {
-                slots[i] = true;
-            }
-        }
-        return slots;
-    }
-
-    //return slots which are currently filled with anything
-    private boolean[] getOccupiedPotionSlots() {
-        boolean[] slots = new boolean[3];
-        for (int i = 0; i < 3; ++i) {
+    private boolean[] getFullPositions() {
+        boolean[] slots = new boolean[2];
+        for(int i = 0; i < 2; ++i) {
             if (!this.items.getStackInSlot(i).isEmpty()) {
                 slots[i] = true;
             }

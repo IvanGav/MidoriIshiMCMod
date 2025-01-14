@@ -1,7 +1,8 @@
-package net.ivangav.midori_ishi.item;
+package net.ivangav.midori_ishi.tabs;
 
 import net.ivangav.midori_ishi.MidoriIshiMod;
 import net.ivangav.midori_ishi.block.ModBlocks;
+import net.ivangav.midori_ishi.item.ModItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -22,12 +23,14 @@ public class ModCreativeModTabs {
                         output.accept(ModItems.MIDORI_ISHI.get());
 
                         output.accept(ModBlocks.MIDORI_ISHI_ORE.get());
+                        output.accept(ModBlocks.DEEPSLATE_MIDORI_ISHI_ORE.get());
 
                         output.accept(ModItems.METAL_DETECTOR.get());
 
                         output.accept(ModItems.MIDORI_VIAL.get());
 
                         output.accept(ModBlocks.MIDORI_INFUSION_TABLE.get());
+                        output.accept(ModBlocks.MIDORI_TRANSMOGRIFICATION_TABLE.get());
                     }))
                     .build());
 
