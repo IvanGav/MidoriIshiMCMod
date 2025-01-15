@@ -3,6 +3,9 @@
   "item.midori_ishi.midori_scanner": "Midori Scanner",
   "item.midori_ishi.midori_vial": "Midori Vial",
 
+  "item.midori_ishi.maxwell": "Maxwell",
+  "item.midori_ishi.maxwell.desc": "\"You have acquired CAT!\"",
+
   "block.midori_ishi.midori_ishi_ore": "Midori Ishi Ore",
   "block.midori_ishi.deepslate_midori_ishi_ore": "Deepslate Midori Ishi Ore",
   "block.midori_ishi.midori_infusion_table": "Midori Infusion Table",

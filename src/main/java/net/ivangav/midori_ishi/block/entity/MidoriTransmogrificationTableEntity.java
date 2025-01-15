@@ -17,6 +17,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.model.obj.ObjLoader;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
@@ -166,7 +167,10 @@ public class MidoriTransmogrificationTableEntity extends BlockEntity implements 
         ItemStack new2 = infusedItem.copy(); new2.setCount(1);
         //slots are empty
         items.insertItem(0, new1, false);
-        items.insertItem(1, new2, false);
+        if(infusedItem.is(Items.MUSIC_DISC_CAT))
+            items.insertItem(1, new ItemStack(ModItems.MAXWELL.get()), false);
+        else
+            items.insertItem(1, new2, false);
         items.getStackInSlot(INGREDIENT_SLOT).shrink(1);
         fuel -= mGetIngredientCost();
     }

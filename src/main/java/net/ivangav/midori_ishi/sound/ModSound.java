@@ -13,6 +13,7 @@ public class ModSound {
             DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MidoriIshiMod.MOD_ID);
 
     public static final RegistryObject<SoundEvent> MIDORI_SCANNER_USE = registerSoundEvents("midori_scanner_use");
+    public static final RegistryObject<SoundEvent> MAXWELL_THEME = registerSoundEvents("maxwell_theme"); //credits to Mr.Weeble - Stockmarket
 
     public static void register(IEventBus ebus) {
         SOUND_EVENTS.register(ebus);

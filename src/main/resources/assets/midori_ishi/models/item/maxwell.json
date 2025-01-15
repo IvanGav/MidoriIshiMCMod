@@ -1,0 +1,11 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "midori_ishi:item/maxwell"
+  },
+  "display": {
+    "firstperson_righthand": {
+      "translation": [ -10, 5, 0]
+    }
+  }
+}

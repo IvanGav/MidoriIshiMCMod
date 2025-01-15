@@ -4,5 +4,13 @@
     "sounds": [
       "midori_ishi:midori_scanner_use"
     ]
+  },
+  "maxwell_theme": {
+    "sounds": [
+      {
+        "name": "midori_ishi:maxwell_theme",
+        "stream": true
+      }
+    ]
   }
 }
