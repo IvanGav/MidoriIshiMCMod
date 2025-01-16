@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
+import org.jetbrains.annotations.NotNull;
 
 public class MidoriInfusionTableMenu extends AbstractContainerMenu {
     private static final int BOTTLE_SLOT_START = 0;
@@ -188,7 +189,7 @@ public class MidoriInfusionTableMenu extends AbstractContainerMenu {
         }
 
         @Override
-        public boolean mayPlace(ItemStack pStack) {
+        public boolean mayPlace(@NotNull ItemStack pStack) {
             return mayPlaceItem(pStack);
         }
 
@@ -199,6 +200,17 @@ public class MidoriInfusionTableMenu extends AbstractContainerMenu {
 
         public static boolean mayPlaceItem(ItemStack pStack) {
             return pStack.is(Items.POTION);
+        }
+
+        @Override
+        public int getMaxStackSize(@NotNull ItemStack stack) {
+            return 1;
+        }
+
+        @Override
+        public void set(@NotNull ItemStack stack) {
+            ItemStack copiedItemStack = stack.copyWithCount(1);
+            super.set(copiedItemStack);
         }
     }
 }
