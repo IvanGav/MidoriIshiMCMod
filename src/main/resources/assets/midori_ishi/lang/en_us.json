@@ -2,6 +2,7 @@
   "item.midori_ishi.midori_ishi": "Midori Ishi",
   "item.midori_ishi.midori_scanner": "Midori Scanner",
   "item.midori_ishi.midori_vial": "Midori Vial",
+  "item.midori_ishi.midori_book": "A Comprehensive Guide to All Things Midori",
 
   "item.midori_ishi.maxwell": "Maxwell",
   "item.midori_ishi.maxwell.desc": "\"You have acquired CAT!\"",
@@ -20,5 +21,8 @@
   "effect.midori_ishi.midas_touch": "Midas Touch",
   "effect.midori_ishi.greater_wither": "Imminent Doom",
   "effect.midori_ishi.spider": "You Are a Spider",
-  "effect.midori_ishi.teleport_disease": "Unstable Teleportatium"
+  "effect.midori_ishi.teleport_disease": "Unstable Teleportatium",
+  "effect.midori_ishi.calcium": "Calcium",
+  "effect.midori_ishi.anvil": "You Are Anvil",
+  "effect.midori_ishi.slime_feet": "Bouncy Feet"
 }

@@ -3,6 +3,8 @@ package net.ivangav.midori_ishi.effect;
 import net.ivangav.midori_ishi.MidoriIshiMod;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -32,6 +34,22 @@ public class ModEffects {
 
     public static final RegistryObject<MobEffect> TELEPORT_DISEASE_EFFECT = MOB_EFFECTS.register("teleport_disease",
             ()->new TeleportDiseaseEffect(MobEffectCategory.HARMFUL, 0));
+
+    public static final RegistryObject<MobEffect> CALCIUM_EFFECT = MOB_EFFECTS.register("calcium",
+            ()->new CalciumEffect(MobEffectCategory.BENEFICIAL, 0));
+
+    public static final RegistryObject<MobEffect> ANVIL_EFFECT = MOB_EFFECTS.register("anvil",
+            ()->new AnvilEffect(MobEffectCategory.NEUTRAL, 0)
+                        .addAttributeModifier(
+                    Attributes.MOVEMENT_SPEED,
+                    uuid1,
+                    -0.5f,
+                    AttributeModifier.Operation.MULTIPLY_BASE
+            )
+    );
+
+    public static final RegistryObject<MobEffect> SLIME_FEET_EFFECT = MOB_EFFECTS.register("slime_feet",
+            ()->new SlimeFeetEffect(MobEffectCategory.NEUTRAL, 0));
 
     public static void register(IEventBus ebus) {
         MOB_EFFECTS.register(ebus);

@@ -32,7 +32,7 @@ public class ModCreativeModTabs {
                         output.accept(ModBlocks.MIDORI_INFUSION_TABLE.get());
                         output.accept(ModBlocks.MIDORI_TRANSMOGRIFICATION_TABLE.get());
 
-//                        output.accept(ModItems.MIDORI_BOOK_ITEM.get());
+                        output.accept(ModItems.MIDORI_BOOK_ITEM.get());
                         output.accept(ModItems.MAXWELL.get());
                     }))
                     .build());

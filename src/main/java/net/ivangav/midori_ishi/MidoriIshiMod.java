@@ -30,7 +30,7 @@ public class MidoriIshiMod {
     // Define mod id in a common place for everything to reference
     public static final String MOD_ID = "midori_ishi";
     // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public MidoriIshiMod() { //FMLJavaModLoadingContext context
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();

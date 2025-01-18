@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "midori_ishi:item/midori_book"
+  }
+}

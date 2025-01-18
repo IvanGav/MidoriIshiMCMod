@@ -1,5 +1,6 @@
 package net.ivangav.midori_ishi.item.custom;
 
+import net.ivangav.midori_ishi.MidoriIshiMod;
 import net.ivangav.midori_ishi.effect.ModEffects;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -12,8 +13,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -24,24 +23,26 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 
-import net.minecraft.world.level.gameevent.GameEvent;
-
 import java.util.List;
+import static java.util.Map.entry;
 
 public class MidoriVialItem extends Item {
     private static final int DRINK_DURATION = 32;
     public static final String NBT_TAG_NAME = "infused_item";
 
-    private static final ImmutableSet<String> vialRecipes = ImmutableSet.of(
+    public static final ImmutableSet<String> vialRecipes = ImmutableSet.of(
             "item.midori_ishi.midori_ishi",
             "item.midori_ishi.maxwell",
 
+            "item.minecraft.bone_meal",
             "item.minecraft.enchanted_golden_apple",
             "item.minecraft.string",
-            "block.minecraft.cobblestone",
             "item.minecraft.ender_pearl",
+            "block.minecraft.slime_block",
+            "block.minecraft.anvil",
             "block.minecraft.wither_rose",
             "block.minecraft.wither_skeleton_skull",
+            "block.minecraft.cobblestone",
             "item.minecraft.gold_ingot"
 //            "item.minecraft.lava_bucket"
 
@@ -78,54 +79,94 @@ public class MidoriVialItem extends Item {
 //            "item.dragonsurvival.weak_dragon_heart",
 //            "item.dragonsurvival.elder_dragon_heart"
     );
-    private static final ImmutableMap<String,VialEffectDanger> vialDanger = ImmutableMap.of(
-            "item.midori_ishi.midori_ishi", VialEffectDanger.Safe,
-            "item.midori_ishi.maxwell", VialEffectDanger.Apocalypse,
+    private static final ImmutableMap<String,VialEffectDanger> vialDanger = ImmutableMap.ofEntries(
+        entry("item.midori_ishi.midori_ishi", VialEffectDanger.Safe),
+        entry("item.midori_ishi.maxwell", VialEffectDanger.Apocalypse),
 
-            "item.minecraft.enchanted_golden_apple", VialEffectDanger.Safe,
-            "item.minecraft.string", VialEffectDanger.Safe,
-            "block.minecraft.cobblestone", VialEffectDanger.Harmful,
-            "item.minecraft.ender_pearl", VialEffectDanger.Harmful,
-            "block.minecraft.wither_rose", VialEffectDanger.Deadly,
-            "block.minecraft.wither_skeleton_skull", VialEffectDanger.Deadly,
-            "item.minecraft.gold_ingot", VialEffectDanger.Destructive
+        entry("item.minecraft.bone_meal", VialEffectDanger.Safe),
+        entry("item.minecraft.enchanted_golden_apple", VialEffectDanger.Safe),
+        entry("item.minecraft.string", VialEffectDanger.Safe),
+        entry("item.minecraft.ender_pearl", VialEffectDanger.Harmful),
+        entry("block.minecraft.slime_block", VialEffectDanger.Harmful),
+        entry("block.minecraft.anvil", VialEffectDanger.Deadly),
+        entry("block.minecraft.wither_rose", VialEffectDanger.Deadly),
+        entry("block.minecraft.wither_skeleton_skull", VialEffectDanger.Deadly),
+        entry("block.minecraft.cobblestone", VialEffectDanger.Destructive),
+        entry("item.minecraft.gold_ingot", VialEffectDanger.Destructive)
 //            "item.minecraft.lava_bucket",
     );
-    private static final ImmutableMap<String,String> vialMessage = ImmutableMap.of(
-            "item.midori_ishi.midori_ishi", "You feel relieved and rejuvinated",
-            "item.midori_ishi.maxwell", "You are a monster",
-            "item.minecraft.enchanted_golden_apple", "Tastes like apple juice and honey, with a slight metallic aftertaste",
-            "item.minecraft.string", "Spooder",
-            "block.minecraft.cobblestone", "Get cobblestoned",
-            "item.minecraft.ender_pearl", "Tastes like ender pearls",
-            "block.minecraft.wither_rose", "An immensly dry potion withers your insides",
-            "block.minecraft.wither_skeleton_skull", "You don't feel well... You feel your insides being turned to dust",
-            "item.minecraft.gold_ingot", "Greed"
+    private static final ImmutableMap<String,String> vialMessage = ImmutableMap.ofEntries(
+        entry("item.midori_ishi.midori_ishi", "You feel relieved and rejuvinated"),
+        entry("item.midori_ishi.maxwell", "You are a monster"),
+
+        entry("item.minecraft.bone_meal", "Tastes like bone juice. \"You are immune to fall damage\""),
+        entry("item.minecraft.enchanted_golden_apple", "Tastes like apple juice and honey, with a slight metallic aftertaste"),
+        entry("item.minecraft.string", "Spooder"),
+        entry("item.minecraft.ender_pearl", "Tastes like ender pearls"),
+        entry("block.minecraft.slime_block", "Your feet feel wonky"),
+        entry("block.minecraft.anvil", "Has a distinct metallic taste. You suddenly feel heavy"),
+        entry("block.minecraft.wither_rose", "An immensly dry potion withers your insides"),
+        entry("block.minecraft.wither_skeleton_skull", "You don't feel well... You feel your insides being turned to dust"),
+        entry("block.minecraft.cobblestone", "Get cobblestoned"),
+        entry("item.minecraft.gold_ingot", "Greed")
     );
-    private static final ImmutableMap<String, Function3<Level, LivingEntity, String, Object>> vialEffect = ImmutableMap.of(
-            "item.midori_ishi.midori_ishi", (level, e, infused_item)-> {
+    private static final ImmutableMap<String, Function3<Level, LivingEntity, String, Object>> vialEffect = ImmutableMap.ofEntries(
+            entry("item.midori_ishi.midori_ishi", (level, e, infused_item)-> {
                 e.addEffect(new MobEffectInstance(MobEffects.HEAL, 20, 3));
                 e.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 200, 1));
                 return null;
-            },
-            "item.midori_ishi.maxwell", (level, e, infused_item)-> {
+            }),
+            entry("item.midori_ishi.maxwell", (level, e, infused_item)-> {
                 e.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.CACTUS));
-                e.teleportTo(0d,-67d, 0d);
-                e.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 100000, 0));
+                e.teleportTo(0d,-66d, 0d);
+                e.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 1200, 0));
+                e.addEffect(new MobEffectInstance(ModEffects.GREATER_WITHER_EFFECT.get(), 1200, 0));
+                MidoriIshiMod.LOGGER.debug("Maxwell: Why? What have I ever done to you?");
+//                Player p = null;
+//                p.getInventory();
+                throw new Error("You shall pay for your sins.");
+//                return null;
+            }),
+
+            entry("item.minecraft.bone_meal", (level, e, infused_item)-> {
+                e.addEffect(new MobEffectInstance(ModEffects.CALCIUM_EFFECT.get(), 24000, 0));
                 return null;
-            },
-            "item.minecraft.enchanted_golden_apple", (level, e, infused_item)-> {
+            }),
+            entry("item.minecraft.enchanted_golden_apple", (level, e, infused_item)-> {
                 e.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 1));
                 e.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 3000, 0));
                 e.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 3000, 0));
                 e.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 1200, 3));
                 return null;
-            },
-            "item.minecraft.string", (level, e, infused_item)-> {
+            }),
+            entry("item.minecraft.string", (level, e, infused_item)-> {
                 e.addEffect(new MobEffectInstance(ModEffects.SPIDER_EFFECT.get(), 2400, 0));
                 return null;
-            },
-            "block.minecraft.cobblestone", (level, e, infused_item)-> {
+            }),
+            entry("item.minecraft.ender_pearl", (level, e, infused_item)-> {
+                e.addEffect(new MobEffectInstance(ModEffects.TELEPORT_DISEASE_EFFECT.get(), 60, 0));
+                return null;
+            }),
+            entry("block.minecraft.slime_block", (level, e, infused_item)-> {
+                e.addEffect(new MobEffectInstance(ModEffects.SLIME_FEET_EFFECT.get(), 600, 0));
+                return null;
+            }),
+            entry("block.minecraft.anvil", (level, e, infused_item)-> {
+//                e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 400, 2));
+                e.addEffect(new MobEffectInstance(ModEffects.ANVIL_EFFECT.get(), 400, 0));
+                return null;
+            }),
+            entry("block.minecraft.wither_rose", (level, e, infused_item)-> {
+                e.addEffect(new MobEffectInstance(MobEffects.WITHER, 1200, 6));
+                e.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 1200, 0));
+                return null;
+            }),
+            entry("block.minecraft.wither_skeleton_skull", (level, e, infused_item)-> {
+                e.addEffect(new MobEffectInstance(MobEffects.WITHER, 1200, 0));
+                e.addEffect(new MobEffectInstance(ModEffects.GREATER_WITHER_EFFECT.get(), 1200, 0));
+                return null;
+            }),
+            entry("block.minecraft.cobblestone", (level, e, infused_item)-> {
                 BlockPos pos = new BlockPos((int) Math.round(e.getX()-0.5), (int) Math.round(e.getY()+1f), (int) Math.round(e.getZ()-0.5));
                 level.playSound(e, pos, SoundEvents.STONE_PLACE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
                 BlockState newState = Blocks.COBBLESTONE.defaultBlockState();
@@ -138,25 +179,11 @@ public class MidoriVialItem extends Item {
                 }
 //                level.gameEvent(e, GameEvent.BLOCK_PLACE, pos);
                 return null;
-            },
-            "item.minecraft.ender_pearl", (level, e, infused_item)-> {
-                e.addEffect(new MobEffectInstance(ModEffects.TELEPORT_DISEASE_EFFECT.get(), 60, 0));
-                return null;
-            },
-            "block.minecraft.wither_rose", (level, e, infused_item)-> {
-                e.addEffect(new MobEffectInstance(MobEffects.WITHER, 1200, 6));
-                e.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 1200, 0));
-                return null;
-            },
-            "block.minecraft.wither_skeleton_skull", (level, e, infused_item)-> {
-                e.addEffect(new MobEffectInstance(MobEffects.WITHER, 1200, 0));
-                e.addEffect(new MobEffectInstance(ModEffects.GREATER_WITHER_EFFECT.get(), 1200, 0));
-                return null;
-            },
-            "item.minecraft.gold_ingot", (level, e, infused_item)-> {
+            }),
+            entry("item.minecraft.gold_ingot", (level, e, infused_item)-> {
                 e.addEffect(new MobEffectInstance(ModEffects.MIDAS_TOUCH_EFFECT.get(), 100, 0));
                 return null;
-            }
+            })
     );
 
     private enum VialEffectDanger {

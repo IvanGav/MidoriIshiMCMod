@@ -34,7 +34,7 @@ public class MidoriTransmogrificationTableEntity extends BlockEntity implements 
     public static final int DATA_FUEL_USES = 1;
     public static final int NUM_DATA_VALUES = 2;
     public static final int BREW_DURATION = 200; //how long 1 brewing session lasts; 20=1sec
-    public static final int MAX_FUEL = 18;
+    public static final int MAX_FUEL = 32;
     public static final int FUEL_PER_REFUEL = 1;
     public static final String[] ILLEGAL_NBT_TAGS = {"Items", "LootTable", "Inventory", "inventorySlots"};
     /** The items currently placed in the slots of the brewing stand. */
@@ -154,10 +154,10 @@ public class MidoriTransmogrificationTableEntity extends BlockEntity implements 
     private int mGetIngredientCost() {
         Rarity rarity = ingredient.getRarity(items.getStackInSlot(INGREDIENT_SLOT));
         return switch(rarity) {
-            case COMMON -> 1;
-            case UNCOMMON -> 4;
-            case RARE -> 8;
-            case EPIC -> 16;
+            case COMMON -> 16;
+            case UNCOMMON -> 20;
+            case RARE -> 28;
+            case EPIC -> 32;
         };
     }
 

@@ -29,8 +29,8 @@ public class ModItems {
     public static final RegistryObject<Item> MAXWELL = ITEMS.register("maxwell",
             () -> new Maxwell(new Item.Properties().stacksTo(1)));
 
-//    public static final RegistryObject<Item> MIDORI_BOOK_ITEM = ITEMS.register("midori_book",
-//            () -> new MidoriBookItem(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> MIDORI_BOOK_ITEM = ITEMS.register("midori_book",
+            () -> new MidoriBookItem(new Item.Properties().stacksTo(1)));
 
     public static void register(IEventBus ebus) {
         ITEMS.register(ebus);
