@@ -35,6 +35,7 @@ public class ModEffects {
     public static final RegistryObject<MobEffect> TELEPORT_DISEASE_EFFECT = MOB_EFFECTS.register("teleport_disease",
             ()->new TeleportDiseaseEffect(MobEffectCategory.HARMFUL, 0));
 
+    // credit for the effect icon: Terraria Calamity Mod
     public static final RegistryObject<MobEffect> CALCIUM_EFFECT = MOB_EFFECTS.register("calcium",
             ()->new CalciumEffect(MobEffectCategory.BENEFICIAL, 0));
 
