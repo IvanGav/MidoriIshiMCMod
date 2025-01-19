@@ -26,7 +26,7 @@ public class AnvilEffect extends MobEffect {
                     toDamage.hurt(e.damageSources().anvil(e), this.fallTicks * 1.3f);
                 }
                 e.level().playSeededSound(null, e.getX(), e.getY(), e.getZ(), SoundEvents.ANVIL_LAND,
-                        SoundSource.BLOCKS, 2f, 1f, 0);
+                        SoundSource.BLOCKS, 1f, 1f, 0);
                 e.removeEffect(this);
                 fallTicks = 0;
             }
